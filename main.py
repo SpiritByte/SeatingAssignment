@@ -5,6 +5,8 @@ BOOKED = 'X'
 ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 seatTable = []
+lastrow=0
+lastcolumn=[]
 # Build seatTable
 for i in range(NUM_ROWS):
     column = []
@@ -15,13 +17,15 @@ for i in range(NUM_ROWS):
  
 # Reset Table
 def resetTable(seats):
+    global lastcolumn
+    lastcolumn = []
     for i in range(NUM_ROWS):
         for j in range(NUM_COLS):
             seats[i][j] = AVAIL
 
  
 # Print Table
-def printTable(seats):
+def printTable1(seats):
     i=1
     alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     print('Row', end=' ')
@@ -37,7 +41,29 @@ def printTable(seats):
             print(j,end=' ')
         print()
 
-def printTable2(seats):
+def printTable(seats, row, column):
+    i=0
+    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    print('Row', end=' ')
+
+    for num in range(NUM_COLS):
+        print(f'{alpha[num]:2s}'.format(alpha),end='')
+    print()
+
+    for num in seats:
+        i+=1
+
+        print(f'{str(i):3s}'.format(str(i)), end=' ')
+        k=0
+        for j in num:
+            if i == row+1 and k in column:
+                print('O',end=' ') 
+            else:
+                print(j,end=' ')
+            k += 1
+        print()
+
+def printTable3(seats):
     i=1
     alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     print('Row', end=' ')
@@ -100,6 +126,20 @@ def findcolumn (seats, num, row):
         if seats[row][2] == AVAIL and seats[row][3] == AVAIL and seats[row][4] == AVAIL:
             column = column + [2,3,4]
             return column
+
+    elif num >=4 and num<=7:
+        for j in range(NUM_COLS-num+1):
+            found = 1
+            for k in range(num):
+                if seats[row][j+k] != AVAIL:
+                    found ==0
+                    break
+            if found == 1:
+                break
+        if found == 1:
+            for l in range(num):
+                column.append(j+l)
+            return column
     return column
 
 def seat(seats, num):
@@ -121,6 +161,10 @@ def seat(seats, num):
 
     # book seats
     bookseat(seats, row, column)
+    global lastrow
+    global lastcolumn
+    lastrow = row
+    lastcolumn = column
 
     # 3 print seat assignments
     seatassign = ""
@@ -143,12 +187,11 @@ while 1==1:
             resetTable(seatTable)
 
         if cnt[0].upper()=='P':
-            printTable(seatTable)
+            printTable(seatTable, lastrow, lastcolumn)
 
     if cnt.isdigit():
         # 1 find seats to assign
         # 2 assign seats
         # 3 print seat assignments
         seat(seatTable, int(cnt))
-
 
