@@ -128,19 +128,43 @@ def findcolumn (seats, num, row):
             return column
 
     elif num >=4 and num<=7:
+        index = 0
+        start = index
+        total = 0
+        while index < NUM_COLS and total < num:
+            if seats[row][index] != AVAIL:
+                index += 1
+                start = index
+                total = 0
+            else:
+                index += 1
+                total += 1
+        if total == num:
+            for i in range(num):
+                column.append(start+i)
+        return column
+    return column       
+""" 
+
+
         for j in range(NUM_COLS-num+1):
-            found = 1
+            found = j
             for k in range(num):
                 if seats[row][j+k] != AVAIL:
                     found ==0
                     break
-            if found == 1:
+            if found != 0:
                 break
-        if found == 1:
+        print(found)
+        print (seats[row][found])
+        if found != 0:
             for l in range(num):
-                column.append(j+l)
+                column.append(found+l)
+            print(column)
             return column
-    return column
+        print(column) 
+"""
+    
 
 def seat(seats, num):
     column = []
