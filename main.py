@@ -162,12 +162,16 @@ def findcolumn (seats, num, row):
 def simplefindseat (seats, num):
     scattcolumn = []
     total = 0
+    done = 0
     for i in range(NUM_ROWS):
+        if done == 1:
+            break
         for j in range(NUM_COLS):
             if seats[i][j] == AVAIL:
                 scattcolumn.append([i,j])
                 total += 1
                 if total == num:
+                    done =1
                     break
     return scattcolumn
 
@@ -177,7 +181,6 @@ def seatbig (seats, num):
     scattcolumn = []
     total = 0
     l = lastseated (seats)
-    print (l)
     #start from latest row
     done = 0 
     for i in range(l[0],NUM_ROWS, 1):
@@ -208,8 +211,12 @@ def seatbig (seats, num):
 
 # Seat
 def seat(seats, num):
+    if CountAvailSeats(seats) == 0:
+        print ("Fully Booked - No more seats available")
+        return
+
     if CountAvailSeats(seats) < num:
-        print ("No seats available")
+        print ("Not enough seats available")
         return
     
     # total seated
