@@ -63,28 +63,6 @@ def printTable(seats, row, column):
             k += 1
         print()
 
-def printTable3(seats):
-    i=1
-    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    print('Row', end=' ')
-
-    for num in range(NUM_COLS):
-        print(f'{alpha[num]:2s}'.format(alpha),end='')
-
-    print()
-
-    for num in seats:
-        print(f'{str(i):3s}'.format(str(i)), end=' ')
-        i+=1
-        k=0
-        for j in num:
-            if j == AVAIL:
-                print(alpha[k],end=' ')
-            else:
-                print(j,end=' ')
-            k+=1
-        print()
-
 def bookseat(seats, row, column):
     for j in column:
         seats[row][j]=BOOKED
@@ -144,26 +122,6 @@ def findcolumn (seats, num, row):
                 column.append(start+i)
         return column
     return column       
-""" 
-
-
-        for j in range(NUM_COLS-num+1):
-            found = j
-            for k in range(num):
-                if seats[row][j+k] != AVAIL:
-                    found ==0
-                    break
-            if found != 0:
-                break
-        print(found)
-        print (seats[row][found])
-        if found != 0:
-            for l in range(num):
-                column.append(found+l)
-            print(column)
-            return column
-        print(column) 
-"""
     
 
 def seat(seats, num):
@@ -197,25 +155,26 @@ def seat(seats, num):
 
     print ("Seating Assignments: " + seatassign)
 
+def main():
+    print ("WELCOME TO MARS AIR SEATING")
 
-print ("WELCOME TO MARS AIR SEATING")
+    while 1==1:
+        cnt = input("How many passengers in your group? E-Exit R-Reset P-Print: ")
 
-while 1==1:
-    cnt = input("How many passengers in your group? E-Exit R-Reset P-Print: ")
+        if cnt.isalpha():
+            if cnt[0].upper()=='E':
+                break
 
-    if cnt.isalpha():
-        if cnt[0].upper()=='E':
-            break
+            if cnt[0].upper()=='R':
+                resetTable(seatTable)
 
-        if cnt[0].upper()=='R':
-            resetTable(seatTable)
+            if cnt[0].upper()=='P':
+                printTable(seatTable, lastrow, lastcolumn)
 
-        if cnt[0].upper()=='P':
-            printTable(seatTable, lastrow, lastcolumn)
+        if cnt.isdigit():
+            # 1 find seats to assign
+            # 2 assign seats
+            # 3 print seat assignments
+            seat(seatTable, int(cnt))
 
-    if cnt.isdigit():
-        # 1 find seats to assign
-        # 2 assign seats
-        # 3 print seat assignments
-        seat(seatTable, int(cnt))
-
+main()
