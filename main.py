@@ -175,40 +175,6 @@ def simplefindseat (seats, num):
                     break
     return scattcolumn
 
-# Seat big 
-def seatbig (seats, num):
-    global Seated
-    scattcolumn = []
-    total = 0
-    l = lastseated (seats)
-    #start from latest row
-    done = 0 
-    for i in range(l[0],NUM_ROWS, 1):
-        if done == 1: 
-            break
-        for j in range(NUM_COLS):
-            if i == l[0] and j<l[1]:
-                continue
-            if seats[i][j] == AVAIL:
-                scattcolumn.append([i,j])
-                total += 1
-                if total == num:
-                    done = 1
-                    break
-    if total<num:
-        for i in range(NUM_ROWS):
-            if done == 1:
-                break
-            for j in range(NUM_COLS):
-                if seats[i][j] == AVAIL:
-                    scattcolumn.append([i,j])
-                    total += 1
-                    if total == num:
-                        done = 1
-                        break
-    Seated = scattcolumn
-    return scattcolumn
-
 # Seat
 def seat(seats, num):
     if CountAvailSeats(seats) == 0:
@@ -271,7 +237,40 @@ def seatsmall(seats, num, startrow):
 
     return row
 
-
+# Seat big 
+def seatbig (seats, num):
+    global Seated
+    scattcolumn = []
+    total = 0
+    l = lastseated (seats)
+    #start from latest row
+    done = 0 
+    for i in range(l[0],NUM_ROWS, 1):
+        if done == 1: 
+            break
+        for j in range(NUM_COLS):
+            if i == l[0] and j<l[1]:
+                continue
+            if seats[i][j] == AVAIL:
+                scattcolumn.append([i,j])
+                total += 1
+                if total == num:
+                    done = 1
+                    break
+    if total<num:
+        for i in range(NUM_ROWS):
+            if done == 1:
+                break
+            for j in range(NUM_COLS):
+                if seats[i][j] == AVAIL:
+                    scattcolumn.append([i,j])
+                    total += 1
+                    if total == num:
+                        done = 1
+                        break
+    Seated = scattcolumn
+    return scattcolumn
+    
 def main():
     global Seated
     print ("WELCOME TO MARS AIR SEATING")
