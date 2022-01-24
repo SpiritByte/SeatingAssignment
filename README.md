@@ -9,24 +9,30 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 ```
-* Python3
-* Visual Studio Code [for editing]
+- Python3
+- Visual Studio Code [for editing]
 ```
 
 ### Downloading
 
 1. Download ```main.py``` to download the program 
 
-## Running the tests
+## The Program
 
-Explain how to run the automated tests for this system
+Running the tests and some commands to use to simplify the program
 
-### Break down into end to end tests
+### Running The Tests
 
-Explain what these tests test and why
+Run ```main.py```
+
+Every number between 1 and 7 will result in that number of seat being reserved, all in contiguous blocks of seats.
+
+### Commands
 
 ```
-Give an example
+E - Exits the program
+R - Resets the map of seats
+P - Prints the current map of seats
 ```
 
 ## Built With
