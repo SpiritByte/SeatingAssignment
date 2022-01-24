@@ -1,3 +1,4 @@
+
 NUM_ROWS = 18
 NUM_COLS = 7
 AVAIL = '-'
