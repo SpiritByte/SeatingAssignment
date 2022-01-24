@@ -9,41 +9,19 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 ```
-Python3
-Visual Studio Code [for editing]
+* Python3
+* Visual Studio Code [for editing]
 ```
 
-### Installing
+### Downloading
 
-A step by step series of examples that tell you how to get a development env running
-
-Download ```main.py```
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+1. Download ```main.py``` to download the program 
 
 ## Running the tests
 
 Explain how to run the automated tests for this system
 
 ### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
 
 Explain what these tests test and why
 
@@ -61,9 +39,7 @@ Version 1.0.0
 
 ## Authors
 
-* **Alexander Li** - *Initial work* - [SpiritByte](https://github.com/SpiritByte)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Alexander Li** - **Initial Work** - [SpiritByte](https://github.com/SpiritByte)
 
 ## License
 
