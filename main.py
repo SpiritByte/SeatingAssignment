@@ -5,8 +5,7 @@ BOOKED = 'X'
 ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 seatTable = []
-lastrow=0
-lastcolumn=[]
+Seated=[]
 # Build seatTable
 for i in range(NUM_ROWS):
     column = []
@@ -24,7 +23,7 @@ def resetTable(seats):
             seats[i][j] = AVAIL
 
  
-# Print Table
+# Print Table (X - taken; - Available)
 def printTable1(seats):
     i=1
     alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -41,7 +40,8 @@ def printTable1(seats):
             print(j,end=' ')
         print()
 
-def printTable(seats, row, column):
+# Print Table (the newly assigned seats show O)
+def printTable(seats, lastseated):
     i=0
     alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     print('Row', end=' ')
@@ -56,28 +56,53 @@ def printTable(seats, row, column):
         print(f'{str(i):3s}'.format(str(i)), end=' ')
         k=0
         for j in num:
-            if i == row+1 and k in column:
+            # i-1, k is last seated
+            if [i-1, k] in lastseated:
                 print('O',end=' ') 
             else:
                 print(j,end=' ')
             k += 1
         print()
 
-def bookseat(seats, row, column):
-    for j in column:
-        seats[row][j]=BOOKED
-
-def findrow(seats, num):
+# count available seats
+def CountAvailSeats(seats):
+    cnt=0
     for i in range(NUM_ROWS):
-        count =0 
+        for j in range(NUM_COLS):
+            if seats[i][j] == AVAIL: 
+                cnt += 1
+    return cnt
+
+# Book seats
+def bookseat(seats, seated):
+    for s in seated:
+            seats[s[0]][s[1]] = BOOKED
+
+# Print seat assignment
+def PrintSeatAssign(seated):
+    # print seat assignments
+    seatassign = ""
+    # s[0] row, s[1] column
+    for s in Seated:
+        seatassign = seatassign + str(s[0]+1) + ALPHA[s[1]] + " "
+
+    print ("Seating Assignments: " + seatassign) 
+
+# Find row
+def findrow(seats, num, startrow):
+    i = startrow
+    while i < NUM_ROWS:
+        count = 0
         for j in range(NUM_COLS):
             if seats[i][j] == AVAIL:
                 count += 1
         if count>=num:
             return i
-    return 0
+        i += 1
+    return 0 
 
 
+# Find Column
 def findcolumn (seats, num, row):
     column=[]
     if num == 1:
@@ -122,24 +147,111 @@ def findcolumn (seats, num, row):
                 column.append(start+i)
         return column
     return column       
-    
 
+# Simple book seat
+def simplefindseat (seats, num):
+    scattcolumn = []
+    total = 0
+    for i in range(NUM_ROWS):
+        for j in range(NUM_COLS):
+            if seats[i][j] == AVAIL:
+                column.append([i,j])
+                total += 1
+                if total == num:
+                    break
+    return scattcolumn
+
+# Seat
 def seat(seats, num):
+    if CountAvailSeats(seats) < num:
+        print ("No seats available")
+        return
+    
+    # total seated
+    global TotalSeated, Seated
+
+    tobeseated = num
+    startrow = 0
+    while tobeseated > 0:
+        if tobeseated > 7:
+            startrow = seatsmall(seats, 7, startrow)
+        else: 
+            startrow = seatsmall(seats, tobeseated, startrow)
+
+        # book seats
+        # it is required to book seats in batches so that next batch can find seats properly
+        bookseat(seats, Seated)
+
+        tobeseated = num - len(Seated)
+
+
+
+    # print seat assignments
+    PrintSeatAssign (Seated)    
+
+# Seat Small
+def seatsmall(seats, num, startrow):
+    global Seated
     column = []
 
-    # 1 find row to assign
+    if CountAvailSeats(seats) < num:
+        print ("No seats available")
+        return
+
+    # find row to assign
+    row = findrow(seats, num, startrow)
+    print (row)
+    if row > -1:
+        # find columns to assign
+        column = findcolumn (seats, num, row)
+
+    # update Seated
+    if len(column)>0:
+        for j in column:
+            Seated.append([row, j])
+
+    # find columns from next row, if no columns of the current row meet the criteria of preference contiguous block
+    while len(column)==0 and row <NUM_ROWS:
+        row = row+1
+        column = findcolumn (seats, num, row)
+        if len(column)>0:
+            for j in column:
+                Seated.append ([row, j])
+
+    # simple seat assignment, if no contiguous block
+    if len(column)==0:
+        ScattedSeated = simplefindseat (seats, num)
+        Seated = Seated + ScattedSeated
+
+    return row
+
+# Seat
+def seat1(seats, num):
+    if CountAvailSeats(seats) < num:
+        print ("No seats available")
+        return
+
+    column = []
+
+    # find row to assign
     row = findrow(seats, num)
 
-    #2 find columns to assign
+    # find columns to assign
     column = findcolumn (seats, num, row)
 
+    # find columns from next row, if no columns of the current row meet the criteria of preference contiguous block
     while len(column)==0 and row <NUM_ROWS:
         row = row+1
         column = findcolumn (seats, num, row)
 
+    # simple seat assignment, if no contiguous block
     if len(column)==0:
-        print ("No seats available")
-        return
+        simplefindseat (seats, num)
+
+    # # no seats available
+    # if len(column)==0:
+    #     print ("No seats available")
+    #     return
 
     # book seats
     bookseat(seats, row, column)
@@ -148,7 +260,7 @@ def seat(seats, num):
     lastrow = row
     lastcolumn = column
 
-    # 3 print seat assignments
+    # print seat assignments
     seatassign = ""
     for j in column:
         seatassign = seatassign + str(row+1) + ALPHA[j] + " "
@@ -156,25 +268,28 @@ def seat(seats, num):
     print ("Seating Assignments: " + seatassign)
 
 def main():
+    global Seated
     print ("WELCOME TO MARS AIR SEATING")
 
     while 1==1:
         cnt = input("How many passengers in your group? E-Exit R-Reset P-Print: ")
 
         if cnt.isalpha():
+            #Exit
             if cnt[0].upper()=='E':
                 break
-
+            #Reset
             if cnt[0].upper()=='R':
                 resetTable(seatTable)
-
+            #Print
             if cnt[0].upper()=='P':
-                printTable(seatTable, lastrow, lastcolumn)
+                printTable(seatTable, Seated)
 
         if cnt.isdigit():
             # 1 find seats to assign
             # 2 assign seats
             # 3 print seat assignments
+            Seated = []
             seat(seatTable, int(cnt))
 
 main()
