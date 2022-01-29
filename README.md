@@ -1,6 +1,6 @@
 # Plane Seating Assignment
 
-One Paragraph of project description goes here
+Seats the passengers as close together as possible
 
 ## Getting Started
 
